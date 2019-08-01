@@ -1,25 +1,61 @@
 /* 
-  sass --watch  single/test.scss:single/nested/test.css --style nested
-  sass --watch  single/test.scss:single/expanded/test.css --style expanded
-  sass --watch  single/test.scss:single/compact/test.css --style compact
-  sass --watch  single/test.scss:single/compressed/test.css --style compressed
+  * 编译为css目标文件
+
+  * 编译方式：
+      1.命令行
+      2.GUI工具编译
+      3.自动化编译, Grunt 和 Gulp
+
+  * 命令行编译
+      sass --watch  single/test.scss:single/nested/test.css --style nested
+      sass --watch  single/test.scss:single/expanded/test.css --style expanded
+      sass --watch  single/test.scss:single/compact/test.css --style compact
+      sass --watch  single/test.scss:single/compressed/test.css --style compressed
+
+  * 混合宏 vs 继承 vs 占位符
+             混合宏                   继承                              占位符
+      声明    @mixin                  .class                           %placeholder
+      调用    @inclued                @extend                          @extend
+      使用    相同代码块使用不同值       无需传不同值，将调用相同基类代码合并   和继承类似，但不调用不产生基类代码，合并相同代码
+      不足    多次调用混合宏，代码冗余    即使不调用也会生成基类
 */
 
+/* 变量声明 */
 $width: 300px;
 $height: 200px;
 $color: red;
 $background: #eee;
 $border-top: 1px solid #eee;
 $border-bottom: 1px solid red;
+
+/* 混合宏声明 */
 @mixin border {
-  border {
+  border: {
     top: $border-top;
-    bottom: $border-bottom;
+    bottom: $border-bottom !important;
   }
 }
-@mixin border-radius {
+/* 混合宏声明 - 传参 */
+@mixin border-radius($border-top, $border-left:1px solid #944) {
   border-radius: 5px;
+  border-top: $border-top;
+  border-bottom: $border-bottom;
+  border-left: $border-left;
 }
+/* 混合宏声明 - 传多参 */
+@mixin box-shadow($shadows...) {
+  box-shadow: $shadows;
+}
+
+/* 混合宏缺点：复用重复代码块，无法合并，生成冗余的代码 */
+h1,h2 {
+  @include border;
+}
+h3 {//编译后css中不与上面合并
+  @include border;
+}
+
+/* 选择器嵌套 + 属性嵌套 */
 body {
   $background: #eee;
   width: $width;
@@ -38,10 +74,13 @@ body {
       }
     }
     span {
-      @include border-radius
+      @include border-radius(1px solid green, 2px solid yellow);
+      @include box-shadow(0 0 1px #eee, 1 1 1px #444);
     }
   }
 }
+
+/* 伪类嵌套 */
 a {
   background: $background;
   span {
@@ -52,5 +91,170 @@ a {
     &:after {
       color: red;
     }
+  }
+}
+
+/* 扩展/继承：编译会把复用代码合并，会形成组合选择器 */
+.btn {
+  border: 1px solid #eee;
+  padding: 5px 15px;
+  font-size: 14px;
+}
+.btn-primary {
+  background: green;
+  @extend .btn;
+}
+.btn-danger {
+  background: red;
+  @extend .btn;
+}
+.btn-info {
+  background: yellow;
+  @extend .btn;
+}
+
+/* 占位符 % */
+%mt10 {
+  margin-top: 10px;
+}
+%mb10 {
+  margin-bottom: 10px;
+}
+%pt10 {
+  padding-top: 10px;
+}
+%pb10 {
+  padding-bottom: 10px;
+}
+%bg_eee {
+  background: #eee;
+}
+.block {
+  span {
+    @extend %mt10;
+    @extend %mb10;
+    @extend %pt10;
+    @extend %pb10;
+  }
+  div {
+    @extend %pt10;
+    @extend %mt10;
+  }
+  p {
+    @extend %pt10;
+    @extend %pb10;
+  }
+}
+
+/* SCSS中混合宏使用 */
+@mixin mt($var){
+  margin-top: $var;  
+}
+.block {
+  @include mt(5px);
+
+  span {
+    display:block;
+    @include mt(5px);
+  }
+}
+.header {
+  color: orange;
+  @include mt(5px);
+
+  span{
+    display:block;
+    @include mt(5px);
+  }
+}
+
+/* SCSS 继承的运用 */
+.mt{
+  margin-top: 5px;  
+}
+.block {
+  @extend .mt;
+
+  span {
+    display:block;
+    @extend .mt;
+  }
+}
+.header {
+  color: orange;
+  @extend .mt;
+
+  span{
+    display:block;
+    @extend .mt;
+  }
+}
+
+/* SCSS中占位符的使用 */
+%mt{
+  margin-top: 5px;  
+}
+.block {
+  @extend %mt;
+
+  span {
+    display:block;
+    @extend %mt;
+  }
+}
+.header {
+  color: orange;
+  @extend %mt;
+
+  span{
+    display:block;
+    @extend %mt;
+  }
+}
+
+/* 插值 */
+@mixin base_text($class, $big, $medium, $small) {
+  .#{$class}-big { font-size: $big }
+  .#{$class}-medium { font-size: $medium }
+  .#{$class}-small { font-size: $small }
+}
+@include base_text('header', 16px, 14px, 12px);
+
+$status: 'status';
+%update-status {
+  background: #eee;
+  color: #fff;
+}
+.select-status {
+  background: #fff;
+  color: red;
+}
+.nav {
+  @extend %update-#{$status};
+  @extend .select-status;
+}
+
+/* sass运算 */
+.box {
+  width: 1px + 1in;
+}
+$content: 100px;
+$box: 50px;
+.container {
+  width: $content + $box;
+  height: $content - $box;
+  .box {
+    // width: $content * $box; // 报错
+    // width: 10px * 5px; // 报错
+    width: $content * 5;
+    height: 100px * 2;
+  }
+  .content {
+    width: $content / 5;   // width: 20px;
+    // height: 100px / 5;  // height: 100px / 5;
+    height: (100px / 5);
+  }
+  .nav {
+    width: 100px / 2 + 3; // 53px;
   }
 }

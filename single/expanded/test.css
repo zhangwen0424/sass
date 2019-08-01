@@ -1,9 +1,41 @@
+@charset "UTF-8";
 /* 
-  sass --watch  single/test.scss:single/nested/test.css --style nested
-  sass --watch  single/test.scss:single/expanded/test.css --style expanded
-  sass --watch  single/test.scss:single/compact/test.css --style compact
-  sass --watch  single/test.scss:single/compressed/test.css --style compressed
+  * 编译为css目标文件
+
+  * 编译方式：
+      1.命令行
+      2.GUI工具编译
+      3.自动化编译, Grunt 和 Gulp
+
+  * 命令行编译
+      sass --watch  single/test.scss:single/nested/test.css --style nested
+      sass --watch  single/test.scss:single/expanded/test.css --style expanded
+      sass --watch  single/test.scss:single/compact/test.css --style compact
+      sass --watch  single/test.scss:single/compressed/test.css --style compressed
+
+  * 混合宏 vs 继承 vs 占位符
+             混合宏                   继承                              占位符
+      声明    @mixin                  .class                           %placeholder
+      调用    @inclued                @extend                          @extend
+      使用    相同代码块使用不同值       无需传不同值，将调用相同基类代码合并   和继承类似，但不调用不产生基类代码，合并相同代码
+      不足    多次调用混合宏，代码冗余    即使不调用也会生成基类
 */
+/* 变量声明 */
+/* 混合宏声明 */
+/* 混合宏声明 - 传参 */
+/* 混合宏声明 - 传多参 */
+/* 混合宏缺点：复用重复代码块，无法合并，生成冗余的代码 */
+h1, h2 {
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid red !important;
+}
+
+h3 {
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid red !important;
+}
+
+/* 选择器嵌套 + 属性嵌套 */
 body {
   width: 300px;
   height: 200px;
@@ -20,8 +52,13 @@ body ul li {
 }
 body ul span {
   border-radius: 5px;
+  border-top: 1px solid green;
+  border-bottom: 1px solid red;
+  border-left: 2px solid yellow;
+  box-shadow: 0 0 1px #eee, 1 1 1px #444;
 }
 
+/* 伪类嵌套 */
 a {
   background: #eee;
 }
@@ -30,6 +67,136 @@ a span:before, a span:hover {
 }
 a span:after {
   color: red;
+}
+
+/* 扩展/继承：编译会把复用代码合并，会形成组合选择器 */
+.btn, .btn-primary, .btn-danger, .btn-info {
+  border: 1px solid #eee;
+  padding: 5px 15px;
+  font-size: 14px;
+}
+
+.btn-primary {
+  background: green;
+}
+
+.btn-danger {
+  background: red;
+}
+
+.btn-info {
+  background: yellow;
+}
+
+/* 占位符 % */
+.block span, .block div {
+  margin-top: 10px;
+}
+
+.block span {
+  margin-bottom: 10px;
+}
+
+.block span, .block div, .block p {
+  padding-top: 10px;
+}
+
+.block span, .block p {
+  padding-bottom: 10px;
+}
+
+/* SCSS中混合宏使用 */
+.block {
+  margin-top: 5px;
+}
+.block span {
+  display: block;
+  margin-top: 5px;
+}
+
+.header {
+  color: orange;
+  margin-top: 5px;
+}
+.header span {
+  display: block;
+  margin-top: 5px;
+}
+
+/* SCSS 继承的运用 */
+.mt, .block, .block span, .header, .header span {
+  margin-top: 5px;
+}
+
+.block span {
+  display: block;
+}
+
+.header {
+  color: orange;
+}
+.header span {
+  display: block;
+}
+
+/* SCSS中占位符的使用 */
+.block, .block span, .header, .header span {
+  margin-top: 5px;
+}
+
+.block span {
+  display: block;
+}
+
+.header {
+  color: orange;
+}
+.header span {
+  display: block;
+}
+
+/* 插值 */
+.header-big {
+  font-size: 16px;
+}
+
+.header-medium {
+  font-size: 14px;
+}
+
+.header-small {
+  font-size: 12px;
+}
+
+.nav {
+  background: #eee;
+  color: #fff;
+}
+
+.select-status, .nav {
+  background: #fff;
+  color: red;
+}
+
+/* sass运算 */
+.box {
+  width: 97px;
+}
+
+.container {
+  width: 150px;
+  height: 50px;
+}
+.container .box {
+  width: 500px;
+  height: 200px;
+}
+.container .content {
+  width: 20px;
+  height: 20px;
+}
+.container .nav {
+  width: 53px;
 }
 
 /*# sourceMappingURL=test.css.map */
