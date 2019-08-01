@@ -1,8 +1,56 @@
+/* 
+  sass --watch  single/test.scss:single/nested/test.css --style nested
+  sass --watch  single/test.scss:single/expanded/test.css --style expanded
+  sass --watch  single/test.scss:single/compact/test.css --style compact
+  sass --watch  single/test.scss:single/compressed/test.css --style compressed
+*/
+
 $width: 300px;
 $height: 200px;
 $color: red;
+$background: #eee;
+$border-top: 1px solid #eee;
+$border-bottom: 1px solid red;
+@mixin border {
+  border {
+    top: $border-top;
+    bottom: $border-bottom;
+  }
+}
+@mixin border-radius {
+  border-radius: 5px;
+}
 body {
+  $background: #eee;
   width: $width;
   height: $height;
   color: $color;
+  background: $background;
+  ul {
+    color: $color;
+    border: {
+      top: $border-top;
+      bottom: $border-bottom;
+    }
+    li {
+      border: {
+        top: $border-top;
+      }
+    }
+    span {
+      @include border-radius
+    }
+  }
+}
+a {
+  background: $background;
+  span {
+    &:before,
+    &:hover {
+      color: #eee;
+    }
+    &:after {
+      color: red;
+    }
+  }
 }

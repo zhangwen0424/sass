@@ -1,0 +1,12 @@
+/*  sass --watch  single/test.scss:single/nested/test.css --style nested sass --watch  single/test.scss:single/expanded/test.css --style expanded sass --watch  single/test.scss:single/compact/test.css --style compact sass --watch  single/test.scss:single/compressed/test.css --style compressed
+*/
+body { width: 300px; height: 200px; color: red; background: #eee; }
+body ul { color: red; border-top: 1px solid #eee; border-bottom: 1px solid red; }
+body ul li { border-top: 1px solid #eee; }
+body ul span { border-radius: 5px; }
+
+a { background: #eee; }
+a span:before, a span:hover { color: #eee; }
+a span:after { color: red; }
+
+/*# sourceMappingURL=test.css.map */
