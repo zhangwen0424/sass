@@ -18,6 +18,9 @@
       调用    @inclued                @extend                          @extend
       使用    相同代码块使用不同值       无需传不同值，将调用相同基类代码合并   和继承类似，但不调用不产生基类代码，合并相同代码
       不足    多次调用混合宏，代码冗余    即使不调用也会生成基类
+  
+  * 插值运算
+      用于变量和属性中
 */
 
 /* 变量声明 */
@@ -212,14 +215,33 @@ a {
   }
 }
 
-/* 插值 */
-@mixin base_text($class, $big, $medium, $small) {
-  .#{$class}-big { font-size: $big }
-  .#{$class}-medium { font-size: $medium }
-  .#{$class}-small { font-size: $small }
+/* 插值：应用于变量和属性中 */
+@mixin font_size($class, $big, $medium, $small) {
+  .#{$class}-#{$big} {
+    font-size: $big;
+    content: "#{$big}"
+  }
+  .#{$class}-#{$medium} {
+    font-size : $medium;
+  }
+  .#{$class}-#{$small} {
+    font-size: $small;
+  }
+  .#{$class}-#{$big} {
+    margin-top: $big;
+  }
+  .#{$class}-#{$medium} {
+    margin-top: $medium;
+  }
+  .#{$class}-#{$small} {
+    margin-top: $small;
+  }
 }
-@include base_text('header', 16px, 14px, 12px);
+@include font_size('font-size', 16px, 14px, 12px);
+@include font_size('margin-top', 30px, 15px, 10px);
 
+
+/* 占位符 */
 $status: 'status';
 %update-status {
   background: #eee;
@@ -257,4 +279,42 @@ $box: 50px;
   .nav {
     width: 100px / 2 + 3; // 53px;
   }
+  .button {
+    width: $content - $box;
+    height: ($content - 10px)*2 - ($box - 20px) / 2;
+  }
+  .color {
+    color: (#020408 / 2);
+    color: #010203 * 2;
+    color: #010203 * #020202;
+    color: #090201 - #020202;
+    color: #090201 + #030202;
+  }
+}
+
+/* 字符运算 */
+$content-text: 'hello '+'world!';
+.content {
+  content: $content-text;
+}
+.span {
+  content: "#{$content-text}";//"hello world!"
+  content: #{$content-text};//hello world!
+}
+
+/* sass控制命令 */
+// @if{} @else{}
+@mixin display($display:true) {
+  @if $display {
+    display: block;
+  }
+  @else {
+    display: none;
+  }
+}
+.block {
+  @include display(ture);
+}
+.hidden {
+  @include display(false)
 }

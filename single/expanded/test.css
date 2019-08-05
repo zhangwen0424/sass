@@ -19,6 +19,9 @@
       调用    @inclued                @extend                          @extend
       使用    相同代码块使用不同值       无需传不同值，将调用相同基类代码合并   和继承类似，但不调用不产生基类代码，合并相同代码
       不足    多次调用混合宏，代码冗余    即使不调用也会生成基类
+  
+  * 插值运算
+      用于变量和属性中
 */
 /* 变量声明 */
 /* 混合宏声明 */
@@ -155,19 +158,58 @@ a span:after {
   display: block;
 }
 
-/* 插值 */
-.header-big {
+/* 插值：应用于变量和属性中 */
+.font-size-16px {
   font-size: 16px;
+  content: "16px";
 }
 
-.header-medium {
+.font-size-14px {
   font-size: 14px;
 }
 
-.header-small {
+.font-size-12px {
   font-size: 12px;
 }
 
+.font-size-16px {
+  margin-top: 16px;
+}
+
+.font-size-14px {
+  margin-top: 14px;
+}
+
+.font-size-12px {
+  margin-top: 12px;
+}
+
+.margin-top-30px {
+  font-size: 30px;
+  content: "30px";
+}
+
+.margin-top-15px {
+  font-size: 15px;
+}
+
+.margin-top-10px {
+  font-size: 10px;
+}
+
+.margin-top-30px {
+  margin-top: 30px;
+}
+
+.margin-top-15px {
+  margin-top: 15px;
+}
+
+.margin-top-10px {
+  margin-top: 10px;
+}
+
+/* 占位符 */
 .nav {
   background: #eee;
   color: #fff;
@@ -197,6 +239,36 @@ a span:after {
 }
 .container .nav {
   width: 53px;
+}
+.container .button {
+  width: 50px;
+  height: 165px;
+}
+.container .color {
+  color: #010204;
+  color: #020406;
+  color: #020406;
+  color: #070000;
+  color: #0c0403;
+}
+
+/* 字符运算 */
+.content {
+  content: "hello world!";
+}
+
+.span {
+  content: "hello world!";
+  content: hello world!;
+}
+
+/* sass控制命令 */
+.block {
+  display: block;
+}
+
+.hidden {
+  display: none;
 }
 
 /*# sourceMappingURL=test.css.map */
