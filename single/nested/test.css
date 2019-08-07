@@ -1,43 +1,421 @@
-/*
-Error: Invalid CSS after "// while": expected selector or at-rule, was "$num:4;"
-        on line 353 of single/test.scss
+@charset "UTF-8";
+/* 
+  * 编译为css目标文件
 
-348: @include margin-size('mb', 'bottom', 1, 5);
-349: @include border-size('bt', 'top', 1, 5);
-350: @include border-size('mb', 'bottom', 1, 5);
-351: @include span(1, 12)
-352: // while
-353: $num:4;
-354: @while $num < 5 {
-355:   
-356: } 
-357: 
-358:   // @debug 10em + 12em;
+  * 编译方式：
+      1.命令行
+      2.GUI工具编译
+      3.自动化编译, Grunt 和 Gulp
 
-Backtrace:
-single/test.scss:353
-/Library/Ruby/Gems/2.3.0/gems/sass-3.7.4/lib/sass/scss/parser.rb:1308:in `expected'
-/Library/Ruby/Gems/2.3.0/gems/sass-3.7.4/lib/sass/scss/parser.rb:1238:in `expected'
-/Library/Ruby/Gems/2.3.0/gems/sass-3.7.4/lib/sass/scss/parser.rb:42:in `parse'
-/Library/Ruby/Gems/2.3.0/gems/sass-3.7.4/lib/sass/engine.rb:414:in `_to_tree'
-/Library/Ruby/Gems/2.3.0/gems/sass-3.7.4/lib/sass/engine.rb:389:in `_render_with_sourcemap'
-/Library/Ruby/Gems/2.3.0/gems/sass-3.7.4/lib/sass/engine.rb:307:in `render_with_sourcemap'
-/Library/Ruby/Gems/2.3.0/gems/sass-3.7.4/lib/sass/plugin/compiler.rb:462:in `update_stylesheet'
-/Library/Ruby/Gems/2.3.0/gems/sass-3.7.4/lib/sass/plugin/compiler.rb:215:in `block in update_stylesheets'
-/Library/Ruby/Gems/2.3.0/gems/sass-3.7.4/lib/sass/plugin/compiler.rb:209:in `each'
-/Library/Ruby/Gems/2.3.0/gems/sass-3.7.4/lib/sass/plugin/compiler.rb:209:in `update_stylesheets'
-/Library/Ruby/Gems/2.3.0/gems/sass-3.7.4/lib/sass/plugin/compiler.rb:443:in `on_file_changed'
-/Library/Ruby/Gems/2.3.0/gems/sass-3.7.4/lib/sass/plugin/compiler.rb:320:in `block in watch'
-/Library/Ruby/Gems/2.3.0/gems/sass-listen-4.0.0/lib/sass-listen/event/config.rb:23:in `call'
-/Library/Ruby/Gems/2.3.0/gems/sass-listen-4.0.0/lib/sass-listen/event/processor.rb:115:in `_process_changes'
-/Library/Ruby/Gems/2.3.0/gems/sass-listen-4.0.0/lib/sass-listen/event/processor.rb:19:in `block in loop_for'
-/Library/Ruby/Gems/2.3.0/gems/sass-listen-4.0.0/lib/sass-listen/event/processor.rb:15:in `loop'
-/Library/Ruby/Gems/2.3.0/gems/sass-listen-4.0.0/lib/sass-listen/event/processor.rb:15:in `loop_for'
-/Library/Ruby/Gems/2.3.0/gems/sass-listen-4.0.0/lib/sass-listen/event/loop.rb:84:in `_wait_for_changes'
-/Library/Ruby/Gems/2.3.0/gems/sass-listen-4.0.0/lib/sass-listen/event/loop.rb:42:in `block in setup'
-/Library/Ruby/Gems/2.3.0/gems/sass-listen-4.0.0/lib/sass-listen/internals/thread_pool.rb:6:in `block in add'
+  * 命令行编译
+      sass --watch  single/test.scss:single/nested/test.css --style nested
+      sass --watch  single/test.scss:single/expanded/test.css --style expanded
+      sass --watch  single/test.scss:single/compact/test.css --style compact
+      sass --watch  single/test.scss:single/compressed/test.css --style compressed
+
+  * 嵌套方式
+      选择器嵌套，属性嵌套，伪类嵌套
+
+  * 混合宏 vs 继承 vs 占位符
+             混合宏                   继承                              占位符
+      声明    @mixin                  .class                           %placeholder
+      调用    @inclued                @extend                          @extend
+      使用    相同代码块使用不同值       无需传不同值，将调用相同基类代码合并   和继承类似，但不调用不产生基类代码，合并相同代码
+      不足    多次调用混合宏，代码冗余    即使不调用也会生成基类
+  
+  * 插值运算 
+      用于变量和属性中
+
+  * 控制命令
+      if else
+      while
+      for (i) form (start) to (end)  
+      for (i) form (start) through (end)  
+      while
+      each in
+
+  * 函数
+      字符串函数
+        unquote：去掉引号
+        quote：增加引号(处理字符串中不可有空格)
+        To-upper-case: 转化为大写字母
+        To-lower-case: 转化为小写字母
+
+
+      数字函数
+        percentage($value) 将一个不带单位的数转换成百分比值（数字不可有单位）
+        round($value) 将数值四舍五入，转换成一个最接近的整数
+        ceil($value) 将大于自己的小数转换成下一位整数
+        floor($value) 将一个数去除他的小数部分
+        abs($value) 返回一个数的绝对值
+        min($numbers…) 找出几个数值之间的最小值
+        max($numbers…) 找出几个数值之间的最大值
+        random() 获取随机
+
 */
-body:before {
-  white-space: pre;
-  font-family: monospace;
-  content: "Error: Invalid CSS after \"// while\": expected selector or at-rule, was \"$num:4;\"\A         on line 353 of single/test.scss\A \A 348: @include margin-size('mb', 'bottom', 1, 5);\A 349: @include border-size('bt', 'top', 1, 5);\A 350: @include border-size('mb', 'bottom', 1, 5);\A 351: @include span(1, 12)\A 352: // while\A 353: $num:4;\A 354: @while $num < 5 {\A 355:   \A 356: } \A 357: \A 358:   // @debug 10em + 12em;"; }
+/* 变量声明 */
+/* 混合宏声明 */
+/* 混合宏声明 - 传参 */
+/* 混合宏声明 - 传多参 */
+/* 混合宏缺点：复用重复代码块，无法合并，生成冗余的代码 */
+h1, h2 {
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid red !important; }
+
+h3 {
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid red !important; }
+
+/* 选择器嵌套 + 属性嵌套 */
+body {
+  width: 300px;
+  height: 200px;
+  color: red;
+  background: #eee; }
+  body ul {
+    color: red;
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid red; }
+    body ul li {
+      border-top: 1px solid #eee; }
+    body ul span {
+      border-radius: 5px;
+      border-top: 1px solid green;
+      border-bottom: 1px solid red;
+      border-left: 2px solid yellow;
+      box-shadow: 0 0 1px #eee, 1 1 1px #444; }
+
+/* 伪类嵌套 */
+a {
+  background: #eee; }
+  a span:before, a span:link, a span:active, a span:hover {
+    color: #eee; }
+  a span:after {
+    color: red; }
+
+/* 扩展/继承：编译会把复用代码合并，会形成组合选择器 */
+.btn, .btn-primary, .btn-danger, .btn-info {
+  border: 1px solid #eee;
+  padding: 5px 15px;
+  font-size: 14px; }
+
+.btn-primary {
+  background: green; }
+
+.btn-danger {
+  background: red; }
+
+.btn-info {
+  background: yellow; }
+
+/* 占位符 % */
+.block span, .block div {
+  margin-top: 10px; }
+
+.block span {
+  margin-bottom: 10px; }
+
+.block span, .block div, .block p {
+  padding-top: 10px; }
+
+.block span, .block p {
+  padding-bottom: 10px; }
+
+/* SCSS中混合宏使用 */
+.block {
+  margin-top: 5px; }
+  .block span {
+    display: block;
+    margin-top: 5px; }
+
+.header {
+  color: orange;
+  margin-top: 5px; }
+  .header span {
+    display: block;
+    margin-top: 5px; }
+
+/* SCSS 继承的运用 */
+.mt, .block, .block span, .header, .header span {
+  margin-top: 5px; }
+
+.block span {
+  display: block; }
+
+.header {
+  color: orange; }
+  .header span {
+    display: block; }
+
+/* SCSS中占位符的使用 */
+.block, .block span, .header, .header span {
+  margin-top: 5px; }
+
+.block span {
+  display: block; }
+
+.header {
+  color: orange; }
+  .header span {
+    display: block; }
+
+/* 插值：应用于变量和属性中 */
+.font-size-16px {
+  font-size: 16px;
+  content: "16px"; }
+
+.font-size-14px {
+  font-size: 14px; }
+
+.font-size-12px {
+  font-size: 12px; }
+
+.font-size-16px {
+  margin-top: 16px; }
+
+.font-size-14px {
+  margin-top: 14px; }
+
+.font-size-12px {
+  margin-top: 12px; }
+
+.margin-top-30px {
+  font-size: 30px;
+  content: "30px"; }
+
+.margin-top-15px {
+  font-size: 15px; }
+
+.margin-top-10px {
+  font-size: 10px; }
+
+.margin-top-30px {
+  margin-top: 30px; }
+
+.margin-top-15px {
+  margin-top: 15px; }
+
+.margin-top-10px {
+  margin-top: 10px; }
+
+/* 占位符 */
+.nav {
+  background: #eee;
+  color: #fff; }
+
+.select-status, .nav {
+  background: #fff;
+  color: red; }
+
+/* sass运算 */
+.box {
+  width: 97px; }
+
+.container {
+  width: 150px;
+  height: 50px; }
+  .container .box {
+    width: 500px;
+    height: 200px; }
+  .container .content {
+    width: 20px;
+    height: 20px; }
+  .container .nav {
+    width: 53px; }
+  .container .button {
+    width: 50px;
+    height: 165px; }
+
+/* 字符运算 */
+.content {
+  content: "hello world!"; }
+
+.span {
+  content: "hello world!";
+  content: hello world!; }
+
+/* sass控制命令 */
+.block {
+  display: block; }
+
+.hidden {
+  display: none; }
+
+.mt-2 {
+  margin-top: 2px; }
+
+.mt-4 {
+  margin-top: 4px; }
+
+.mt-6 {
+  margin-top: 6px; }
+
+.mt-8 {
+  margin-top: 8px; }
+
+.mb-2 {
+  margin-bottom: 2px; }
+
+.mb-4 {
+  margin-bottom: 4px; }
+
+.mb-6 {
+  margin-bottom: 6px; }
+
+.mb-8 {
+  margin-bottom: 8px; }
+
+.bt-2 {
+  border-top: 2px solid #eee; }
+
+.bt-4 {
+  border-top: 4px solid #eee; }
+
+.bt-6 {
+  border-top: 6px solid #eee; }
+
+.bt-8 {
+  border-top: 8px solid #eee; }
+
+.bt-10 {
+  border-top: 10px solid #eee; }
+
+.mb-2 {
+  border-bottom: 2px solid #eee; }
+
+.mb-4 {
+  border-bottom: 4px solid #eee; }
+
+.mb-6 {
+  border-bottom: 6px solid #eee; }
+
+.mb-8 {
+  border-bottom: 8px solid #eee; }
+
+.mb-10 {
+  border-bottom: 10px solid #eee; }
+
+.span1 {
+  float: left;
+  padding-left: 10px;
+  padding-right: 10px;
+  width: 8.3333333333%; }
+
+.span2 {
+  float: left;
+  padding-left: 10px;
+  padding-right: 10px;
+  width: 16.6666666667%; }
+
+.span3 {
+  float: left;
+  padding-left: 10px;
+  padding-right: 10px;
+  width: 25%; }
+
+.span4 {
+  float: left;
+  padding-left: 10px;
+  padding-right: 10px;
+  width: 33.3333333333%; }
+
+.span5 {
+  float: left;
+  padding-left: 10px;
+  padding-right: 10px;
+  width: 41.6666666667%; }
+
+.span6 {
+  float: left;
+  padding-left: 10px;
+  padding-right: 10px;
+  width: 50%; }
+
+.span7 {
+  float: left;
+  padding-left: 10px;
+  padding-right: 10px;
+  width: 58.3333333333%; }
+
+.span8 {
+  float: left;
+  padding-left: 10px;
+  padding-right: 10px;
+  width: 66.6666666667%; }
+
+.span9 {
+  float: left;
+  padding-left: 10px;
+  padding-right: 10px;
+  width: 75%; }
+
+.span10 {
+  float: left;
+  padding-left: 10px;
+  padding-right: 10px;
+  width: 83.3333333333%; }
+
+.span11 {
+  float: left;
+  padding-left: 10px;
+  padding-right: 10px;
+  width: 91.6666666667%; }
+
+.span12 {
+  float: left;
+  padding-left: 10px;
+  padding-right: 10px;
+  width: 100%; }
+
+.num4 {
+  width: 40px; }
+
+.num3 {
+  width: 30px; }
+
+.num2 {
+  width: 20px; }
+
+.num1 {
+  width: 10px; }
+
+.avatar .photo-a {
+  background: url("images/avatars/a.png") no-repeat; }
+.avatar .photo-b {
+  background: url("images/avatars/b.png") no-repeat; }
+.avatar .photo-c {
+  background: url("images/avatars/c.png") no-repeat; }
+.avatar .photo-d {
+  background: url("images/avatars/d.png") no-repeat; }
+
+/* sass 函数功能 */
+.test {
+  border: 1px solid #eee;
+  content: "hello-world";
+  text: "aaabc";
+  text: "ABCAVDS"; }
+
+.footer {
+  width: 12%;
+  width: 11px;
+  width: 1px;
+  width: 3px;
+  width: 13.67px;
+  width: min(1em, 2em, 6em);
+  width: max(1em, 2em, 6em);
+  width: 0.5480347345px; }
+
+.num {
+  width: 4px;
+  width: 5px;
+  border: 1px solid #eee;
+  border: 1px solid #eee;
+  margin: 20px 10px;
+  padding: 2px 3px 1px 4px;
+  content: 1 solid green, 2 dotted red, 3 dashed yellow; }
+
+/* sass @ 规则 */
+.content {
+  content: 'test@import'; }
+
+/*# sourceMappingURL=test.css.map */

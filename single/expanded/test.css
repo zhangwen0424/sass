@@ -38,11 +38,19 @@
       字符串函数
         unquote：去掉引号
         quote：增加引号(处理字符串中不可有空格)
-        To-upper-case:
-        To-lower-case:
+        To-upper-case: 转化为大写字母
+        To-lower-case: 转化为小写字母
 
 
       数字函数
+        percentage($value) 将一个不带单位的数转换成百分比值（数字不可有单位）
+        round($value) 将数值四舍五入，转换成一个最接近的整数
+        ceil($value) 将大于自己的小数转换成下一位整数
+        floor($value) 将一个数去除他的小数部分
+        abs($value) 返回一个数的绝对值
+        min($numbers…) 找出几个数值之间的最小值
+        max($numbers…) 找出几个数值之间的最大值
+        random() 获取随机
 
 */
 /* 变量声明 */
@@ -471,11 +479,38 @@ a span:after {
   background: url("images/avatars/d.png") no-repeat;
 }
 
+/* sass 函数功能 */
 .test {
   border: 1px solid #eee;
   content: "hello-world";
   text: "aaabc";
   text: "ABCAVDS";
+}
+
+.footer {
+  width: 12%;
+  width: 11px;
+  width: 1px;
+  width: 3px;
+  width: 13.67px;
+  width: min(1em, 2em, 6em);
+  width: max(1em, 2em, 6em);
+  width: 0.5860757938px;
+}
+
+.num {
+  width: 4px;
+  width: 5px;
+  border: 1px solid #eee;
+  border: 1px solid #eee;
+  margin: 20px 10px;
+  padding: 2px 3px 1px 4px;
+  content: 1 solid green, 2 dotted red, 3 dashed yellow;
+}
+
+/* sass @ 规则 */
+.content {
+  content: 'test@import';
 }
 
 /*# sourceMappingURL=test.css.map */
