@@ -1,80 +1,74 @@
 @charset "UTF-8";
-/* 
-  * 编译为css目标文件
-
-  * 编译方式：
-      1.命令行
-      2.GUI工具编译
-      3.自动化编译, Grunt 和 Gulp
-
-  * 命令行编译
-      sass --watch  single/test.scss:single/nested/test.css --style nested
-      sass --watch  single/test.scss:single/expanded/test.css --style expanded
-      sass --watch  single/test.scss:single/compact/test.css --style compact
-      sass --watch  single/test.scss:single/compressed/test.css --style compressed
-
-  * sass和scss转换
-    # 将 Sass 转换为 SCSS
-    $ sass-convert style.sass style.scss
-
-    # 将 SCSS 转换为 Sass
-    $ sass-convert single/test.scss single/test.sass
-    $ sass single/test.sass:single/test1.css --style expanded
-
-  * 嵌套方式
-      选择器嵌套，属性嵌套，伪类嵌套
-
-  * 混合宏 vs 继承 vs 占位符
-             混合宏                   继承                              占位符
-      声明    @mixin                  .class                           %placeholder
-      调用    @inclued                @extend                          @extend
-      使用    相同代码块使用不同值       无需传不同值，将调用相同基类代码合并   和继承类似，但不调用不产生基类代码，合并相同代码
-      不足    多次调用混合宏，代码冗余    即使不调用也会生成基类
-  
-  * 插值运算 
-      用于变量和属性中
-
-  * 控制命令
-      if else
-      while
-      for (i) form (start) to (end)  
-      for (i) form (start) through (end)  
-      while
-      each in
-
-  * 函数
-      字符串函数
-        unquote：去掉引号
-        quote：增加引号(处理字符串中不可有空格)
-        To-upper-case: 转化为大写字母
-        To-lower-case: 转化为小写字母
-
-
-      数字函数
-        percentage($value) 将一个不带单位的数转换成百分比值（数字不可有单位）
-        round($value) 将数值四舍五入，转换成一个最接近的整数
-        ceil($value) 将大于自己的小数转换成下一位整数
-        floor($value) 将一个数去除他的小数部分
-        abs($value) 返回一个数的绝对值
-        min($numbers…) 找出几个数值之间的最小值
-        max($numbers…) 找出几个数值之间的最大值
-        random() 获取随机
-
-      introspection 函数
-        type-of($value) 返回一个值的类型 number，string，color，bool
-        unit($number) 返回一个值的单位 单位
-        unitless($number) 判断一个值是否带有带位 true/false
-        comparable($number-1, $number-2) 判断两个值是否可以做加、减和合并 true/false
-
-
-*/
+/*  * 编译为css目标文件
+ *
+ *  * 编译方式：
+ *      1.命令行
+ *      2.GUI工具编译
+ *      3.自动化编译, Grunt 和 Gulp
+ *
+ *  * 命令行编译
+ *      sass --watch  single/test.scss:single/nested/test.css --style nested
+ *      sass --watch  single/test.scss:single/expanded/test.css --style expanded
+ *      sass --watch  single/test.scss:single/compact/test.css --style compact
+ *      sass --watch  single/test.scss:single/compressed/test.css --style compressed
+ *
+ *  * 命令行编译
+ *    # 将 Sass 转换为 SCSS
+ *    $ sass-convert style.sass style.scss
+ *
+ *    # 将 SCSS 转换为 Sass
+ *    $ sass-convert single/test.scss single/test.sass
+ *
+ *  * 嵌套方式
+ *      选择器嵌套，属性嵌套，伪类嵌套
+ *
+ *  * 混合宏 vs 继承 vs 占位符
+ *             混合宏                   继承                              占位符
+ *      声明    @mixin                  .class                           %placeholder
+ *      调用    @inclued                @extend                          @extend
+ *      使用    相同代码块使用不同值       无需传不同值，将调用相同基类代码合并   和继承类似，但不调用不产生基类代码，合并相同代码
+ *      不足    多次调用混合宏，代码冗余    即使不调用也会生成基类
+ *  
+ *  * 插值运算 
+ *      用于变量和属性中
+ *
+ *  * 控制命令
+ *      if else
+ *      while
+ *      for (i) form (start) to (end)  
+ *      for (i) form (start) through (end)  
+ *      while
+ *      each in
+ *
+ *  * 函数
+ *      字符串函数
+ *        unquote：去掉引号
+ *        quote：增加引号(处理字符串中不可有空格)
+ *        To-upper-case: 转化为大写字母
+ *        To-lower-case: 转化为小写字母
+ *
+ *
+ *      数字函数
+ *        percentage($value) 将一个不带单位的数转换成百分比值（数字不可有单位）
+ *        round($value) 将数值四舍五入，转换成一个最接近的整数
+ *        ceil($value) 将大于自己的小数转换成下一位整数
+ *        floor($value) 将一个数去除他的小数部分
+ *        abs($value) 返回一个数的绝对值
+ *        min($numbers…) 找出几个数值之间的最小值
+ *        max($numbers…) 找出几个数值之间的最大值
+ *        random() 获取随机
+ *
+ *      introspection 函数
+ *        type-of($value) 返回一个值的类型 number，string，color，bool
+ *        unit($number) 返回一个值的单位 单位
+ *        unitless($number) 判断一个值是否带有带位 true/false
+ *        comparable($number-1, $number-2) 判断两个值是否可以做加、减和合并 true/false */
 /* 变量声明 */
 /* 混合宏声明 */
 /* 混合宏声明 - 传参 */
 /* 混合宏声明 - 传多参 */
 /* 混合宏缺点：复用重复代码块，无法合并，生成冗余的代码 */
-h1,
-h2 {
+h1, h2 {
   border-top: 1px solid #eee;
   border-bottom: 1px solid red !important;
 }
@@ -511,7 +505,7 @@ a span:after {
   width: 13.67px;
   width: min(1em, 2em, 6em);
   width: max(1em, 2em, 6em);
-  width: 0.1607795426px;
+  width: 0.4654524148px;
 }
 
 .num {
@@ -527,39 +521,13 @@ a span:after {
 
 .text {
   content: "string";
-  content: "number";
   content: "px";
-  content: false;
-  content: true;
+  content: "number";
 }
 
 /* sass @ 规则 */
-.background {
-  background: red;
+.content {
+  content: 'test@import';
 }
 
-.color {
-  color: red;
-}
-
-@media screen and (-webkit-min-device-pixel-ratio: 1.5) {
-  .sidebar {
-    width: 500px;
-  }
-}
-.color1 {
-  color: red;
-}
-
-.color1 {
-  border: 1px solid #eee;
-}
-
-ul li {
-  width: 100px;
-}
-a {
-  color: green;
-}
-
-/*# sourceMappingURL=test.css.map */
+/*# sourceMappingURL=test1.css.map */

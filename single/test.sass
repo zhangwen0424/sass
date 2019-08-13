@@ -1,0 +1,462 @@
+/* 
+ *  * 编译为css目标文件
+ *
+ *  * 编译方式：
+ *      1.命令行
+ *      2.GUI工具编译
+ *      3.自动化编译, Grunt 和 Gulp
+ *
+ *  * 命令行编译
+ *      sass --watch  single/test.scss:single/nested/test.css --style nested
+ *      sass --watch  single/test.scss:single/expanded/test.css --style expanded
+ *      sass --watch  single/test.scss:single/compact/test.css --style compact
+ *      sass --watch  single/test.scss:single/compressed/test.css --style compressed
+ *
+ *  * 命令行编译
+ *    # 将 Sass 转换为 SCSS
+ *    $ sass-convert style.sass style.scss
+ *
+ *    # 将 SCSS 转换为 Sass
+ *    $ sass-convert single/test.scss single/test.sass
+ *
+ *  * 嵌套方式
+ *      选择器嵌套，属性嵌套，伪类嵌套
+ *
+ *  * 混合宏 vs 继承 vs 占位符
+ *             混合宏                   继承                              占位符
+ *      声明    @mixin                  .class                           %placeholder
+ *      调用    @inclued                @extend                          @extend
+ *      使用    相同代码块使用不同值       无需传不同值，将调用相同基类代码合并   和继承类似，但不调用不产生基类代码，合并相同代码
+ *      不足    多次调用混合宏，代码冗余    即使不调用也会生成基类
+ *  
+ *  * 插值运算 
+ *      用于变量和属性中
+ *
+ *  * 控制命令
+ *      if else
+ *      while
+ *      for (i) form (start) to (end)  
+ *      for (i) form (start) through (end)  
+ *      while
+ *      each in
+ *
+ *  * 函数
+ *      字符串函数
+ *        unquote：去掉引号
+ *        quote：增加引号(处理字符串中不可有空格)
+ *        To-upper-case: 转化为大写字母
+ *        To-lower-case: 转化为小写字母
+ *
+ *
+ *      数字函数
+ *        percentage($value) 将一个不带单位的数转换成百分比值（数字不可有单位）
+ *        round($value) 将数值四舍五入，转换成一个最接近的整数
+ *        ceil($value) 将大于自己的小数转换成下一位整数
+ *        floor($value) 将一个数去除他的小数部分
+ *        abs($value) 返回一个数的绝对值
+ *        min($numbers…) 找出几个数值之间的最小值
+ *        max($numbers…) 找出几个数值之间的最大值
+ *        random() 获取随机
+ *
+ *      introspection 函数
+ *        type-of($value) 返回一个值的类型 number，string，color，bool
+ *        unit($number) 返回一个值的单位 单位
+ *        unitless($number) 判断一个值是否带有带位 true/false
+ *        comparable($number-1, $number-2) 判断两个值是否可以做加、减和合并 true/false
+
+/* 变量声明
+$width: 300px
+$height: 200px
+$color: red
+$background: #eee
+$border-top: 1px solid #eee
+$border-bottom: 1px solid red
+
+/* 混合宏声明
+=border
+  border:
+    top: $border-top
+    bottom: $border-bottom !important
+
+/* 混合宏声明 - 传参
+=border-radius($border-top, $border-left: 1px solid #944)
+  border-radius: 5px
+  border-top: $border-top
+  border-bottom: $border-bottom
+  border-left: $border-left
+
+/* 混合宏声明 - 传多参
+=box-shadow($shadows...)
+  box-shadow: $shadows
+
+/* 混合宏缺点：复用重复代码块，无法合并，生成冗余的代码
+h1, h2
+  +border
+
+h3
+  //编译后css中不与上面合并
+  +border
+
+/* 选择器嵌套 + 属性嵌套
+body
+  $background: #eee
+
+  width: $width
+  height: $height
+  color: $color
+  background: $background
+
+  ul
+    color: $color
+    border:
+      top: $border-top
+      bottom: $border-bottom
+
+    li
+      border:
+        top: $border-top
+
+    span
+      +border-radius(1px solid green, 2px solid yellow)
+      +box-shadow(0 0 1px #eee, 1 1 1px #444)
+
+/* 伪类嵌套
+a
+  background: $background
+
+  span
+    &:before,
+    &:link,
+    &:active,
+    &:hover
+      color: #eee
+
+    &:after
+      color: red
+
+/* 扩展/继承：编译会把复用代码合并，会形成组合选择器
+.btn
+  border: 1px solid #eee
+  padding: 5px 15px
+  font-size: 14px
+
+.btn-primary
+  background: green
+
+  @extend .btn
+
+.btn-danger
+  background: red
+
+  @extend .btn
+
+.btn-info
+  background: yellow
+
+  @extend .btn
+
+/* 占位符 %
+%mt10
+  margin-top: 10px
+
+%mb10
+  margin-bottom: 10px
+
+%pt10
+  padding-top: 10px
+
+%pb10
+  padding-bottom: 10px
+
+%bg_eee
+  background: #eee
+
+.block
+  span
+    @extend %mt10
+
+    @extend %mb10
+
+    @extend %pt10
+
+    @extend %pb10
+
+  div
+    @extend %pt10
+
+    @extend %mt10
+
+  p
+    @extend %pt10
+
+    @extend %pb10
+
+/* SCSS中混合宏使用
+=mt($var)
+  margin-top: $var
+
+.block
+  +mt(5px)
+
+  span
+    display: block
+
+    +mt(5px)
+
+.header
+  color: orange
+
+  +mt(5px)
+
+  span
+    display: block
+
+    +mt(5px)
+
+/* SCSS 继承的运用
+.mt
+  margin-top: 5px
+
+.block
+  @extend .mt
+
+  span
+    display: block
+
+    @extend .mt
+
+.header
+  color: orange
+
+  @extend .mt
+
+  span
+    display: block
+
+    @extend .mt
+
+/* SCSS中占位符的使用
+%mt
+  margin-top: 5px
+
+.block
+  @extend %mt
+
+  span
+    display: block
+
+    @extend %mt
+
+.header
+  color: orange
+
+  @extend %mt
+
+  span
+    display: block
+
+    @extend %mt
+
+/* 插值：应用于变量和属性中
+=font_size($class, $big, $medium, $small)
+  .#{$class}-#{$big}
+    font-size: $big
+    content: "#{$big}"
+
+  .#{$class}-#{$medium}
+    font-size: $medium
+
+  .#{$class}-#{$small}
+    font-size: $small
+
+  .#{$class}-#{$big}
+    margin-top: $big
+
+  .#{$class}-#{$medium}
+    margin-top: $medium
+
+  .#{$class}-#{$small}
+    margin-top: $small
+
++font_size("font-size", 16px, 14px, 12px)
++font_size("margin-top", 30px, 15px, 10px)
+
+/* 占位符
+$status: "status"
+
+%update-status
+  background: #eee
+  color: #fff
+
+.select-status
+  background: #fff
+  color: red
+
+.nav
+  @extend %update-#{$status}
+
+  @extend .select-status
+
+/* sass运算
+.box
+  width: 1px + 1in
+
+$content: 100px
+$box: 50px
+
+.container
+  width: $content + $box
+  height: $content - $box
+
+  .box
+    // width: $content * $box; // 报错
+    // width: 10px * 5px; // 报错
+    width: $content * 5
+    height: 100px * 2
+
+  .content
+    width: $content / 5
+
+    // width: 20px;
+    // height: 100px / 5;  // height: 100px / 5;
+    height: (100px / 5)
+
+  .nav
+    width: 100px / 2 + 3
+
+    // 53px;
+
+  .button
+    width: $content - $box
+    height: ($content - 10px) * 2 - ($box - 20px) / 2
+
+  .color
+    // color: (#020408 / 2);
+    // color: #010203 * 2;
+    // color: #010203 * #020202;
+    // color: #090201 - #020202;
+    // color: #090201 + #030202;
+
+/* 字符运算
+$content-text: "hello " + "world!"
+
+.content
+  content: $content-text
+
+.span
+  content: "#{$content-text}"
+
+  //"hello world!"
+  content: #{$content-text}
+
+  //hello world!
+
+/* sass控制命令
+// @if{} @else{}
+=display($display: true)
+  @if $display
+    display: block
+  @else
+    display: none
+
+.block
+  +display(ture)
+
+.hidden
+  +display(false)
+
+// for 循环  [@for $i from $start to $end](不包括end) && [@for $from $start through $end](包括end)
+$px: 1px
+
+=margin-size($class, $type, $start, $end)
+  @for $i from $start to $end
+    .#{$class}-#{$i * 2}
+      margin-#{$type}: $i * 2 * $px
+
+=border-size($class, $type, $start, $end)
+  @for $i from $start through $end
+    .#{$class}-#{$i * 2}
+      border-#{$type}: ($i * 2 * $px) solid #eee
+
+=span($start, $end)
+  @for $i from $start through $end
+    .span#{$i}
+      float: left
+      padding-left: 10px
+      padding-right: 10px
+      width: 100% / 12 * $i
+
++margin-size("mt", "top", 1, 5)
++margin-size("mb", "bottom", 1, 5)
++border-size("bt", "top", 1, 5)
++border-size("mb", "bottom", 1, 5)
++span(1, 12)
+
+// while
+$num: 4
+
+@while $num > 0
+  .num#{$num}
+    width: $num * 10px
+
+  $num: $num - 1
+
+// each
+$names: a b c d
+
+=images
+  @each $p in $names
+    .photo-#{$p}
+      background: url("images/avatars/#{$p}.png") no-repeat
+
+.avatar
+  +images
+
+/* sass 函数功能
+// 字符串函数： unquote, quote,
+.test
+  border: unquote("1px solid #eee")
+  content: quote(hello-world)
+  text: to-lower-case("AAABC")
+  text: to-upper-case("abcAVDs")
+
+// 数字函数：percentage, round, ceil, floor, abs, min, max, random
+.footer
+  width: percentage(0.12)
+  width: round(10.62px)
+  width: ceil(0.212px)
+  width: floor(3.67px)
+  width: abs(-13.67px)
+  width: min(1em, 2em, 6em)
+  width: max(1em, 2em, 6em)
+  width: random() * 1px
+
+// 列表函数：length, nth, join, append, zip, index;
+.num
+  width: length(2 3 4 1) * 1px
+  width: nth(1 3 5 7, 3) * 1px
+  border: join((1px, solid), #eee, space)
+
+  //space,comma
+  border: join(1px, solid #eee)
+
+  //space,comma
+  margin: join(20px, 10px)
+  padding: append(2px 3px 1px, 4px)
+  content: zip(1 2 3, solid dotted dashed, green red yellow)
+  text: index(1px solid #eee, 1px)
+
+// introspection 函数
+// type-of($value) 返回一个值的类型 number，string，color，bool
+// unit($number) 返回一个值的单位 单位
+// unitless($number) 判断一个值是否带有带位 true/false
+// comparable($number-1, $number-2) 判断两个值是否可以做加、减和合并 true/false
+.text
+  content: quote(type-of(px))
+  content: quote(unit(1px))
+  content: quote(type-of(1))
+
+/* sass @ 规则
+@import import.scss
+
+// @debug 10em + 12em;

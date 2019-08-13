@@ -12,6 +12,14 @@
       sass --watch  single/test.scss:single/compact/test.css --style compact
       sass --watch  single/test.scss:single/compressed/test.css --style compressed
 
+  * sass和scss转换
+    # 将 Sass 转换为 SCSS
+    $ sass-convert style.sass style.scss
+
+    # 将 SCSS 转换为 Sass
+    $ sass-convert single/test.scss single/test.sass
+    $ sass single/test.sass:single/test1.css --style expanded
+
   * 嵌套方式
       选择器嵌套，属性嵌套，伪类嵌套
 
@@ -51,6 +59,13 @@
         max($numbers…) 找出几个数值之间的最大值
         random() 获取随机
 
+      introspection 函数
+        type-of($value) 返回一个值的类型 number，string，color，bool
+        unit($number) 返回一个值的单位 单位
+        unitless($number) 判断一个值是否带有带位 true/false
+        comparable($number-1, $number-2) 判断两个值是否可以做加、减和合并 true/false
+
+
 */
 
 /* 变量声明 */
@@ -67,45 +82,61 @@ $border-bottom: 1px solid red;
     top: $border-top;
     bottom: $border-bottom !important;
   }
+
+  ;
 }
+
 /* 混合宏声明 - 传参 */
-@mixin border-radius($border-top, $border-left:1px solid #944) {
+@mixin border-radius($border-top, $border-left: 1px solid #944) {
   border-radius: 5px;
   border-top: $border-top;
   border-bottom: $border-bottom;
   border-left: $border-left;
 }
+
 /* 混合宏声明 - 传多参 */
 @mixin box-shadow($shadows...) {
   box-shadow: $shadows;
 }
 
 /* 混合宏缺点：复用重复代码块，无法合并，生成冗余的代码 */
-h1,h2 {
+h1,
+h2 {
   @include border;
 }
-h3 {//编译后css中不与上面合并
+
+h3 {
+  //编译后css中不与上面合并
   @include border;
 }
 
 /* 选择器嵌套 + 属性嵌套 */
 body {
   $background: #eee;
+
   width: $width;
   height: $height;
   color: $color;
   background: $background;
+
   ul {
     color: $color;
+
     border: {
       top: $border-top;
       bottom: $border-bottom;
     }
+
+    ;
+
     li {
       border: {
         top: $border-top;
       }
+
+      ;
     }
+
     span {
       @include border-radius(1px solid green, 2px solid yellow);
       @include box-shadow(0 0 1px #eee, 1 1 1px #444);
@@ -116,13 +147,16 @@ body {
 /* 伪类嵌套 */
 a {
   background: $background;
+
   span {
+
     &:before,
     &:link,
     &:active,
     &:hover {
       color: #eee;
     }
+
     &:after {
       color: red;
     }
@@ -135,16 +169,22 @@ a {
   padding: 5px 15px;
   font-size: 14px;
 }
+
 .btn-primary {
   background: green;
+
   @extend .btn;
 }
+
 .btn-danger {
   background: red;
+
   @extend .btn;
 }
+
 .btn-info {
   background: yellow;
+
   @extend .btn;
 }
 
@@ -152,97 +192,124 @@ a {
 %mt10 {
   margin-top: 10px;
 }
+
 %mb10 {
   margin-bottom: 10px;
 }
+
 %pt10 {
   padding-top: 10px;
 }
+
 %pb10 {
   padding-bottom: 10px;
 }
+
 %bg_eee {
   background: #eee;
 }
+
 .block {
   span {
     @extend %mt10;
+
     @extend %mb10;
+
     @extend %pt10;
+
     @extend %pb10;
   }
+
   div {
     @extend %pt10;
+
     @extend %mt10;
   }
+
   p {
     @extend %pt10;
+
     @extend %pb10;
   }
 }
 
 /* SCSS中混合宏使用 */
-@mixin mt($var){
-  margin-top: $var;  
+@mixin mt($var) {
+  margin-top: $var;
 }
+
 .block {
   @include mt(5px);
 
   span {
-    display:block;
+    display: block;
+
     @include mt(5px);
   }
 }
+
 .header {
   color: orange;
+
   @include mt(5px);
 
-  span{
-    display:block;
+  span {
+    display: block;
+
     @include mt(5px);
   }
 }
 
 /* SCSS 继承的运用 */
-.mt{
-  margin-top: 5px;  
+.mt {
+  margin-top: 5px;
 }
+
 .block {
   @extend .mt;
 
   span {
-    display:block;
+    display: block;
+
     @extend .mt;
   }
 }
+
 .header {
   color: orange;
+
   @extend .mt;
 
-  span{
-    display:block;
+  span {
+    display: block;
+
     @extend .mt;
   }
 }
 
 /* SCSS中占位符的使用 */
-%mt{
-  margin-top: 5px;  
+%mt {
+  margin-top: 5px;
 }
+
 .block {
   @extend %mt;
 
   span {
-    display:block;
+    display: block;
+
     @extend %mt;
   }
 }
+
 .header {
   color: orange;
+
   @extend %mt;
 
-  span{
-    display:block;
+  span {
+    display: block;
+
     @extend %mt;
   }
 }
@@ -251,40 +318,49 @@ a {
 @mixin font_size($class, $big, $medium, $small) {
   .#{$class}-#{$big} {
     font-size: $big;
-    content: "#{$big}"
+    content: "#{$big}";
   }
+
   .#{$class}-#{$medium} {
-    font-size : $medium;
+    font-size: $medium;
   }
+
   .#{$class}-#{$small} {
     font-size: $small;
   }
+
   .#{$class}-#{$big} {
     margin-top: $big;
   }
+
   .#{$class}-#{$medium} {
     margin-top: $medium;
   }
+
   .#{$class}-#{$small} {
     margin-top: $small;
   }
 }
-@include font_size('font-size', 16px, 14px, 12px);
-@include font_size('margin-top', 30px, 15px, 10px);
 
+@include font_size("font-size", 16px, 14px, 12px);
+@include font_size("margin-top", 30px, 15px, 10px);
 
 /* 占位符 */
-$status: 'status';
+$status: "status";
+
 %update-status {
   background: #eee;
   color: #fff;
 }
+
 .select-status {
   background: #fff;
   color: red;
 }
+
 .nav {
   @extend %update-#{$status};
+
   @extend .select-status;
 }
 
@@ -292,105 +368,129 @@ $status: 'status';
 .box {
   width: 1px + 1in;
 }
+
 $content: 100px;
 $box: 50px;
+
 .container {
   width: $content + $box;
   height: $content - $box;
+
   .box {
     // width: $content * $box; // 报错
     // width: 10px * 5px; // 报错
     width: $content * 5;
     height: 100px * 2;
   }
+
   .content {
-    width: $content / 5;   // width: 20px;
-    // height: 100px / 5;  // height: 100px / 5;
+    width: $content / 5; // width: 20px;
+    // height: 100px / 5; // height: 100px / 5;
     height: (100px / 5);
   }
+
   .nav {
     width: 100px / 2 + 3; // 53px;
+
   }
+
   .button {
     width: $content - $box;
-    height: ($content - 10px)*2 - ($box - 20px) / 2;
+    height: ($content - 10px) * 2 - ($box - 20px) / 2;
   }
+
   .color {
     // color: (#020408 / 2);
     // color: #010203 * 2;
     // color: #010203 * #020202;
     // color: #090201 - #020202;
     // color: #090201 + #030202;
+
   }
 }
 
 /* 字符运算 */
-$content-text: 'hello '+'world!';
+$content-text: "hello "+"world!";
+
 .content {
   content: $content-text;
 }
+
 .span {
-  content: "#{$content-text}";//"hello world!"
-  content: #{$content-text};//hello world!
+  content: "#{$content-text}"; //"hello world!"
+  content: #{$content-text}; //hello world!
 }
 
 /* sass控制命令 */
 // @if{} @else{}
-@mixin display($display:true) {
+@mixin display($display: true) {
   @if $display {
     display: block;
   }
+
   @else {
     display: none;
   }
 }
+
 .block {
   @include display(ture);
 }
+
 .hidden {
-  @include display(false)
+  @include display(false);
 }
+
 // for 循环  [@for $i from $start to $end](不包括end) && [@for $from $start through $end](包括end)
 $px: 1px;
+
 @mixin margin-size($class, $type, $start, $end) {
   @for $i from $start to $end {
-    .#{$class}-#{$i*2} {
-      margin-#{$type}: $i*2*$px;
+    .#{$class}-#{$i * 2} {
+      margin-#{$type}: $i * 2 * $px;
     }
   }
 }
+
 @mixin border-size($class, $type, $start, $end) {
   @for $i from $start through $end {
-    .#{$class}-#{$i*2} {
-      border-#{$type}: $i*2*$px solid #eee;
+    .#{$class}-#{$i * 2} {
+      border-#{$type}: ($i * 2 * $px) solid #eee;
     }
   }
 }
-@mixin span($start,$end) {
+
+@mixin span($start, $end) {
   @for $i from $start through $end {
     .span#{$i} {
-      float: left;;
+      float: left;
       padding-left: 10px;
       padding-right: 10px;
-      width: 100%/12 * $i;
+      width: 100% / 12 * $i;
     }
   }
 }
-@include margin-size('mt', 'top', 1, 5);
-@include margin-size('mb', 'bottom', 1, 5);
-@include border-size('bt', 'top', 1, 5);
-@include border-size('mb', 'bottom', 1, 5);
+
+@include margin-size("mt", "top", 1, 5);
+@include margin-size("mb", "bottom", 1, 5);
+@include border-size("bt", "top", 1, 5);
+@include border-size("mb", "bottom", 1, 5);
 @include span(1, 12);
+
 // while
 $num: 4;
+
 @while $num>0 {
   .num#{$num} {
     width: $num * 10px;
   }
+
   $num: $num - 1;
 }
+
 // each
 $names: a b c d;
+
 @mixin images {
   @each $p in $names {
     .photo-#{$p} {
@@ -398,45 +498,87 @@ $names: a b c d;
     }
   }
 }
+
 .avatar {
   @include images;
 }
+
 /* sass 函数功能 */
-// 字符串函数： unquote, quote,
+// 字符串函数： unquote, quote, to-lower-case, to-upper-case
 .test {
-  border: unquote('1px solid #eee');
+  border: unquote("1px solid #eee");
   content: quote(hello-world);
-  text: to-lower-case('AAABC');
-  text: to-upper-case('abcAVDs');
+  text: to-lower-case("AAABC");
+  text: to-upper-case("abcAVDs");
 }
+
 // 数字函数：percentage, round, ceil, floor, abs, min, max, random
 .footer {
-    width: percentage(0.12);
-    width: round(10.62px);
-    width: ceil(0.212px);
-    width: floor(3.67px);
-    width: abs(-13.67px);
-    width: min(1em,2em,6em);
-    width: max(1em,2em,6em);
-    width: random()*1px;
+  width: percentage(0.12);
+  width: round(10.62px);
+  width: ceil(0.212px);
+  width: floor(3.67px);
+  width: abs(-13.67px);
+  width: min(1em, 2em, 6em);
+  width: max(1em, 2em, 6em);
+  width: random() * 1px;
 }
-// 列表函数：
+
+// 列表函数：length, nth, join, append, zip, index;
 .num {
-  width: length(2 3 4 1)*1px;
-  width: nth(1 3 5 7, 3)*1px;
-  border: join((1px,solid),#eee, space);//space,comma
-  border: join(1px, (solid #eee));//space,comma
-  margin: join(20px,10px);
+  width: length(2 3 4 1) * 1px;
+  width: nth(1 3 5 7, 3) * 1px;
+  border: join((1px, solid), #eee, space); //space,comma
+  border: join(1px, solid #eee); //space,comma
+  margin: join(20px, 10px);
   padding: append(2px 3px 1px, 4px);
   content: zip(1 2 3, solid dotted dashed, green red yellow);
+  text: index(1px solid #eee, 1px);
 }
 
-
+// introspection 函数
+// type-of($value) 返回一个值的类型 number，string，color，bool
+// unit($number) 返回一个值的单位 单位
+// unitless($number) 判断一个值是否带有带位 true/false
+// comparable($number-1, $number-2) 判断两个值是否可以做加、减和合并 true/false
+.text {
+  content: quote(type-of(px));
+  content: quote(type-of(1));
+  content: quote(unit(1px));
+  content: unitless(1px);
+  content: comparable(1px,2);
+}
 
 /* sass @ 规则 */
-@import 'import.scss';
-
-
-
-
-// @debug 10em + 12em;
+// @import
+@import "background", '_color';
+// @media  
+$media: screen;
+$feature: -webkit-min-device-pixel-ratio;
+$value: 1.5;
+@media #{$media} and ($feature: $value) {
+  .sidebar {
+    width: 500px;
+  }
+}
+// @extend 扩展选择器或占位符
+%red  {color: red;}
+.color1 {
+  border:1px solid #eee;
+  @extend %red;
+}
+// @at-root 跳出根结点
+ul {
+  li {
+    width:100px;
+    @at-root a {
+      color: green;
+    }
+  }
+}
+// @debug  输入编译错误提示,调试scss代码
+@debug 10em + 12em; 
+// @warn 错误提示代码
+@warn 'this is a warning';
+// @error 错误提示
+// @error 'you must be wrong'

@@ -196,9 +196,9 @@ a span:after { color: red; }
 /* sass 函数功能 */
 .test { border: 1px solid #eee; content: "hello-world"; text: "aaabc"; text: "ABCAVDS"; }
 
-.footer { width: 12%; width: 11px; width: 1px; width: 3px; width: 13.67px; width: min(1em, 2em, 6em); width: max(1em, 2em, 6em); width: 0.466054842px; }
+.footer { width: 12%; width: 11px; width: 1px; width: 3px; width: 13.67px; width: min(1em, 2em, 6em); width: max(1em, 2em, 6em); width: 0.8568411702px; }
 
-.num { width: 4px; width: 5px; border: 1px solid #eee; border: 1px solid #eee; margin: 20px 10px; padding: 2px 3px 1px 4px; content: 1 solid green, 2 dotted red, 3 dashed yellow; }
+.num { width: 4px; width: 5px; border: 1px solid #eee; border: 1px solid #eee; margin: 20px 10px; padding: 2px 3px 1px 4px; content: 1 solid green, 2 dotted red, 3 dashed yellow; text: 1; }
 
 /* sass @ 规则 */
 .content { content: 'test@import'; }
