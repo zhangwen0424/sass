@@ -8,10 +8,18 @@
       3.自动化编译, Grunt 和 Gulp
 
   * 命令行编译
-      sass --watch  single/test.scss:single/nested/test.css --style nested
-      sass --watch  single/test.scss:single/expanded/test.css --style expanded
-      sass --watch  single/test.scss:single/compact/test.css --style compact
-      sass --watch  single/test.scss:single/compressed/test.css --style compressed
+      sass --watch  single/test.scss:single/nested/test.css --sourcemap=none --no-cache --style nested
+      sass --watch  single/test.scss:single/expanded/test.css --sourcemap=none --no-cache --style expanded
+      sass --watch  single/test.scss:single/compact/test.css --sourcemap=none --no-cache --style compact
+      sass --watch  single/test.scss:single/compressed/test.css --sourcemap=none --no-cache --style compressed
+
+  * sass和scss转换
+    # 将 Sass 转换为 SCSS
+    $ sass-convert style.sass style.scss
+
+    # 将 SCSS 转换为 Sass
+    $ sass-convert single/test.scss single/test.sass
+    $ sass single/test.sass:single/test1.css --style expanded
 
   * 嵌套方式
       选择器嵌套，属性嵌套，伪类嵌套
@@ -52,13 +60,21 @@
         max($numbers…) 找出几个数值之间的最大值
         random() 获取随机
 
+      introspection 函数
+        type-of($value) 返回一个值的类型 number，string，color，bool
+        unit($number) 返回一个值的单位 单位
+        unitless($number) 判断一个值是否带有带位 true/false
+        comparable($number-1, $number-2) 判断两个值是否可以做加、减和合并 true/false
+
+
 */
 /* 变量声明 */
 /* 混合宏声明 */
 /* 混合宏声明 - 传参 */
 /* 混合宏声明 - 传多参 */
 /* 混合宏缺点：复用重复代码块，无法合并，生成冗余的代码 */
-h1, h2 {
+h1,
+h2 {
   border-top: 1px solid #eee;
   border-bottom: 1px solid red !important; }
 
@@ -403,7 +419,7 @@ a {
   width: 13.67px;
   width: min(1em, 2em, 6em);
   width: max(1em, 2em, 6em);
-  width: 0.5480347345px; }
+  width: 0.9418053184px; }
 
 .num {
   width: 4px;
@@ -412,10 +428,33 @@ a {
   border: 1px solid #eee;
   margin: 20px 10px;
   padding: 2px 3px 1px 4px;
-  content: 1 solid green, 2 dotted red, 3 dashed yellow; }
+  content: 1 solid green, 2 dotted red, 3 dashed yellow;
+  text: 1; }
+
+.text {
+  content: "string";
+  content: "number";
+  content: "px";
+  content: false;
+  content: true; }
 
 /* sass @ 规则 */
-.content {
-  content: 'test@import'; }
+.background {
+  background: red; }
 
-/*# sourceMappingURL=test.css.map */
+.color {
+  color: red; }
+
+@media screen and (-webkit-min-device-pixel-ratio: 1.5) {
+  .sidebar {
+    width: 500px; } }
+.color1 {
+  color: red; }
+
+.color1 {
+  border: 1px solid #eee; }
+
+ul li {
+  width: 100px; }
+  a {
+    color: green; }

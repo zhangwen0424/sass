@@ -8,10 +8,10 @@
       3.自动化编译, Grunt 和 Gulp
 
   * 命令行编译
-      sass --watch  single/test.scss:single/nested/test.css --style nested
-      sass --watch  single/test.scss:single/expanded/test.css --style expanded
-      sass --watch  single/test.scss:single/compact/test.css --style compact
-      sass --watch  single/test.scss:single/compressed/test.css --style compressed
+      sass --watch  single/test.scss:single/nested/test.css --sourcemap=none --no-cache --style nested
+      sass --watch  single/test.scss:single/expanded/test.css --sourcemap=none --no-cache --style expanded
+      sass --watch  single/test.scss:single/compact/test.css --sourcemap=none --no-cache --style compact
+      sass --watch  single/test.scss:single/compressed/test.css --sourcemap=none --no-cache --style compressed
 
   * sass和scss转换
     # 将 Sass 转换为 SCSS
@@ -511,7 +511,7 @@ a span:after {
   width: 13.67px;
   width: min(1em, 2em, 6em);
   width: max(1em, 2em, 6em);
-  width: 0.1607795426px;
+  width: 0.9526318433px;
 }
 
 .num {
@@ -561,5 +561,3 @@ ul li {
 a {
   color: green;
 }
-
-/*# sourceMappingURL=test.css.map */
